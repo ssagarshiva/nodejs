@@ -6,8 +6,8 @@ name: Ci/CD
 on:
   push:
     branches:
-      - main
-      - master
+      - sample
+  
 jobs:
   build:
     runs-on: ubuntu-latest
