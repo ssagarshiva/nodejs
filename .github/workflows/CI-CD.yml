@@ -1,4 +1,4 @@
-#name: ci-cd for nodejs-project
+name: ci-cd for nodejs-project
 
 on :
   push:
@@ -15,7 +15,7 @@ jobs:
         steps:
             - uses: actions/checkout@v4
 
-            - name: To install node.js version
+        - name: To install node.js version
               uses: actions/setup-node@v4
               with:
                 node-version: 'latest'
