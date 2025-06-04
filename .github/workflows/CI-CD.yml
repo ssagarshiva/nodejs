@@ -29,7 +29,7 @@ jobs:
                 context: .
                 file: Dockerfile
                 push: true
-                tags: sagarshiva0/nodejs-project:latest
+                tags: sagarshiva0/nodejs-project:V1
 
   
 
