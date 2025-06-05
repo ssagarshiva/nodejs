@@ -1,11 +1,22 @@
 name: ci-cd for nodejs-project
 
 on :
-  push:
+  #push:
+  #  branches:
+  #    - sample
+  #    - main
+  #    - mas
+
+  pull_request:
     branches:
       - sample
       - main
       - mas
+
+  schedule:
+    - cron: '0 0 * * *' # Runs every day at midnight
+
+  workflow_dispatch: # Allows manual triggering of the workflow
 
 
 jobs:
