@@ -41,7 +41,7 @@ jobs:
                 context: .
                 file: Dockerfile
                 push: true
-                tags: sagarshiva0/nodejs-project:V2
+                tags: sagarshiva0/nodejs:V2
 
   
 
