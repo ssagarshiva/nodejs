@@ -14,7 +14,7 @@ on :
       - mas
 
   schedule:
-    - cron: '0 0 * * *' # Runs every day at midnight
+    - cron: '45 4 * * *' # Runs every day at midnight
 
   workflow_dispatch: # Allows manual triggering of the workflow
 
