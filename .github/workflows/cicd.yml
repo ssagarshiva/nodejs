@@ -1,0 +1,30 @@
+name: CI / CD
+
+on:
+  push:
+    branches:
+      - sample
+  
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: To install Node.js version 16.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: '16.x'
+
+      - name: npm install, build, and test
+        run: |
+          npm install
+          npm run build --if-present
+          npm run test --if-present
+
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v4
+        with:
+          name: node-app
+          path: .
