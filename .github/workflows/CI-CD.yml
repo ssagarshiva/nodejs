@@ -67,7 +67,7 @@ jobs:
 
             - name: Get AKS Credentials
               run: |
-                az aks get-credentials --resource-group sample-dev-us-aks --name sample-dev-us-aks
+                az aks get-credentials --resource-group sample-dev-us-rg --name sample-dev-us-aks
 
             - name: deploy to kubernetes
               run: |
