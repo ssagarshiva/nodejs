@@ -1,0 +1,30 @@
+apiversion: apps/v1
+kind: Deployment
+metadata:
+  name: nodejs-project
+  namespace: sample
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nodejs-project
+  template:
+    metadata:
+      labels:
+        app: nodejs-project
+    spec:
+      containers:
+        - name: nodejs-project
+          image: sampledevuacr.azurecr.io/nodejs-project:v7
+          ports:
+            - containerPort: 3000
+          env:
+            - name: NODE_ENV
+              value: "production"
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "500m"
+            limits:
+              memory: "512Mi"
+              cpu: "1"

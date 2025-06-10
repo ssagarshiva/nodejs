@@ -38,28 +38,44 @@ jobs:
 
             - name: build and push docker image
               run: |
-                docker build -t sampledevuacr.azurecr.io/nodejs-project:v6 .
-                docker push sampledevuacr.azurecr.io/nodejs-project:v6
+                docker build -t sampledevuacr.azurecr.io/nodejs-project:v7 .
+                docker push sampledevuacr.azurecr.io/nodejs-project:v7
 
 
             - name: login to azure
               uses: azure/login@v1
               with:
                 creds: ${{ secrets.AZURE_CREDENTIALS }}
-  
 
-            
+
+            - name: Set AKS Context
+              uses: azure/aks-set-context@v1
+              with:
+                creds: ${{ secrets.AZURE_CREDENTIALS }}
+                resource-group: sample-dev-us-rg
+                cluster-name: sample-dev-us-aks
+
+            - name: install azure cli
+              uses: azure/setup-azure-cli@v1
+              with:
+                version: 'latest'
+                
+            - name: install kubectl
+              run: |
+                az aks install-cli
             - name: set up kubectl
               uses: azure/setup-kubectl@v1
               with:
                 version: 'latest'
 
-            - name: deploy to azure k8s
-              uses: azure/aks-set-context@v1
-              with:
-                resource-group: sample-dev-us-rg
-                cluster-name: sample-dev-us-aks
-                namespace: sample
+            - name: Get AKS Credentials
+              run: |
+                az aks get-credentials --resource-group sample-dev-us-aks --name sample-dev-us-aks
+
+            - name: deploy to kubernetes
+              run: |
+                kubectl apply -f deployment/k8s.yml
+                
                 
                 
 
