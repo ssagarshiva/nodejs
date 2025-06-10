@@ -55,11 +55,8 @@ jobs:
                 resource-group: sample-dev-us-rg
                 cluster-name: sample-dev-us-aks
 
-            - name: install azure cli
-              uses: azure/setup-azure-cli@v1
-              with:
-                version: 'latest'
-                
+           
+
             - name: install kubectl
               run: |
                 az aks install-cli
