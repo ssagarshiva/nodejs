@@ -38,8 +38,17 @@ jobs:
 
             - name: build and push docker image
               run: |
-                docker build -t sampledevuacr.azurecr.io/nodejs-project:v4 .
-                docker push sampledevuacr.azurecr.io/nodejs-project:v4
+                docker build -t sampledevuacr.azurecr.io/nodejs-project:v5 .
+                docker push sampledevuacr.azurecr.io/nodejs-project:v5
+
+
+
+            - name: deploy to azure k8s
+              uses: azure/aks-set-context@v1
+              with:
+                resource-group: sample-dev-us-rg
+                cluster-name: sample-dev-us-aks
+                namespace: sample
                 
                 
 
