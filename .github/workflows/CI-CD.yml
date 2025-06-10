@@ -60,14 +60,15 @@ jobs:
             - name: install kubectl
               run: |
                 az aks install-cli
+
             - name: set up kubectl
               uses: azure/setup-kubectl@v1
               with:
                 version: 'latest'
 
-            - name: Get AKS Credentials
-              run: |
-                az aks get-credentials --resource-group sample-dev-us-rg --name sample-dev-us-aks
+            #- name: Get AKS Credentials
+            #  run: |
+            #    az aks get-credentials --resource-group sample-dev-us-rg --name sample-dev-us-aks
 
             - name: deploy to kubernetes
               run: |
