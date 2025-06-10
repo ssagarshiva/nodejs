@@ -38,10 +38,21 @@ jobs:
 
             - name: build and push docker image
               run: |
-                docker build -t sampledevuacr.azurecr.io/nodejs-project:v5 .
-                docker push sampledevuacr.azurecr.io/nodejs-project:v5
+                docker build -t sampledevuacr.azurecr.io/nodejs-project:v6 .
+                docker push sampledevuacr.azurecr.io/nodejs-project:v6
 
 
+            - name: login to azure
+              uses: azure/login@v1
+              with:
+                creds: ${{ secrets.AZURE_CREDENTIALS }}
+  
+
+            
+            - name: set up kubectl
+              uses: azure/setup-kubectl@v1
+              with:
+                version: 'latest'
 
             - name: deploy to azure k8s
               uses: azure/aks-set-context@v1
