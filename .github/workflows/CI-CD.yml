@@ -36,17 +36,27 @@ jobs:
                   echo "TAG=$(date +%Y%m%d%H%M%S)" >> $GITHUB_ENV
 
 
-            - name: log in to docker
-              uses: azure/docker-login@v2
+            - name: docker login
+              uses: docker/login-action@v2
               with:
-                login-server: ${{ vars.ACR_HOST }}
-                username: ${{ vars.ACR_USERNAME }}
-                password: ${{ secrets.Azure_PASSWORD }}
+                registry: docker.io
+                username: ${{ secrets.DOCKER_USERNAME }}
+                password: ${{ secrets.DOCKER_PASSWORD }}
+
+
+
+
+            #- name: log in to docker
+            #  uses: azure/docker-login@v2
+            #  with:
+            #    login-server: ${{ vars.ACR_HOST }}
+            #    username: ${{ vars.ACR_USERNAME }}
+            #    password: ${{ secrets.Azure_PASSWORD }}
 
             - name: build and push docker image
               run: |
-                docker build -t ${{ vars.ACR_HOST }}/${{ vars.ACR_REPO}}:${{ env.TAG }} .
-                docker push ${{ vars.ACR_HOST }}/${{ vars.ACR_REPO}}:${{ env.TAG }}
+                docker build -t sagarshiva0/node:${{ env.TAG }} .
+                docker push sagarshiva0/node:${{ env.TAG }}
 
     Deploy:
         runs-on: ubuntu-latest
