@@ -33,7 +33,7 @@ jobs:
             - name: randam image version 
               id: tag
               run: |
-                  echo "TAG=$(date +%Y%m%d%H%M%S)" >> $GITHUB_ENV
+                  echo "TAG=$(date +%Y%m%d%H%M)" >> $GITHUB_ENV
 
 
             - name: docker login
