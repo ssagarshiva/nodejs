@@ -43,8 +43,8 @@ jobs:
 
             - name: build and push docker image
               run: |
-                docker build -t ${{ vars.ACR_HOST }}/${{ vars.ACR_REPO}}:BRANCH_NAME .
-                docker push ${{ vars.ACR_HOST }}/${{ vars.ACR_REPO}}:BRANCH_NAME
+                docker build -t ${{ vars.ACR_HOST }}/${{ vars.ACR_REPO}}:${{ BRANCH_NAME }} .
+                docker push ${{ vars.ACR_HOST }}/${{ vars.ACR_REPO}}:${{ BRANCH_NAME }}
 
     Deploy:
         runs-on: ubuntu-latest
