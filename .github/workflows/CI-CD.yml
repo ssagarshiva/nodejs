@@ -38,7 +38,7 @@ jobs:
               uses: azure/docker-login@v2
               with:
                 login-server: ${{ vars.ACR_HOST }}
-                username: sampledevuacr
+                username: ${{ vars.ACR_USERNAME }}
                 password: ${{ secrets.Azure_PASSWORD }}
 
             - name: build and push docker image
