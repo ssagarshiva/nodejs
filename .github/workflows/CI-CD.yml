@@ -33,7 +33,7 @@ jobs:
             - name: randam image version 
               id: tag
               run: |
-                  BRANCH_NAME=$(echo "${GITHUB_REF#refs/heads/}") / tr '/' '_'
+                  BRANCH_NAME=$(echo "${GITHUB_REF#refs/heads/}" / tr '/' '_' )
                   TIMESTAMP=$(date +%Y%m%d%H%M%S)
                   TAG="${BRANCH_NAME}-${TIMESTAMP}"
                   echo "TAG=${IMAGE_TAG}" >> $GITHUB_ENV
