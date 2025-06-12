@@ -11,6 +11,11 @@ on :
     types:
       - closed
 
+    branches:
+      - sample
+      - main
+      - master
+
   schedule:
     - cron: '45 4 * * *' # Runs every day at midnight
 
