@@ -8,10 +8,8 @@ on :
   #    - mas
 
   pull_request:
-    branches:
-      - sample
-      - main
-      - mas
+    types:
+      - closed
 
   schedule:
     - cron: '45 4 * * *' # Runs every day at midnight
