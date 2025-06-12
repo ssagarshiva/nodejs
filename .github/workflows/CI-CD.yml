@@ -34,8 +34,8 @@ jobs:
               id: tag
               run: |
                   BRANCH_NAME=$(echo "${GITHUB_REF#refs/heads/}" | tr '/' '_' )
-                  JOB_ID=$(echo "${{ date %YY%M%H }}" )
-                  TAG="${BRANCH_NAME}-${JOB_ID}"
+                  TIME_STAMP=$( echo "${ date +%Y%m%d%H%M%S }" )
+                  TAG="${BRANCH_NAME}-${TIME_STAMP}"
                   echo "TAG=$TAG" >> $GITHUB_ENV
 
 
