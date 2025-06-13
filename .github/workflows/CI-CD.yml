@@ -36,5 +36,4 @@ jobs:
         DOCKER_REPO: ${{ vars.DOCKER_REPO }}
         DOCKER_USERNAME: ${{ vars.DOCKER_USERNAME }}
 
-      secrets: 
-        password: ${{ secrets.DOCKER_PASSWORD }}
+      secrets: inherit
