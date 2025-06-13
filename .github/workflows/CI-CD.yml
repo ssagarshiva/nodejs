@@ -16,7 +16,7 @@ jobs:
     setup:
       runs-on: ubuntu-latest
       outputs:
-        release_version: ${{ steps.set-variable.outputs.repo_digests }}
+        release_version: ${{ steps.step1.outputs.release_version }}
 
       steps:
         - name: setting the variable
