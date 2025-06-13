@@ -1,23 +1,11 @@
 name: ci-cd for nodejs-project
 
 on :
-  #push:
-  #  branches:
-  #    - sample
-  #    - main
-  #    - mas
-
-  pull_request:
-    types:
-      - closed
-
+  push:
     branches:
       - sample
       - main
       - master
-
-  schedule:
-    - cron: '45 4 * * *' # Runs every day at midnight
 
   workflow_dispatch: # Allows manual triggering of the workflow
 
@@ -25,97 +13,26 @@ on :
 
 jobs:
 
-    build:
-        runs-on: ubuntu-latest
-    
+    setup:
+      runs-on: ubuntu-latest
+      outputs:
+        repo_digests: ${{ steps.set-variable.outputs.repo_digests }}
 
-        steps:
-            - name: checkout code
-              uses: actions/checkout@v4
-
-            - name: randam image version 
-              id: tag
-              run: |
-                  BRANCH_NAME=$(echo "${GITHUB_REF#refs/heads/}" | tr '/' '_' )
-                  TIME_STAMp=$(date +'%y%m%d')
-                  echo "TAG=${BRANCH_NAME}-${TIME_STAMp}" >> $GITHUB_ENV
+      steps:
+        - name: setting the variable
+          id: step1
+          run: |
+            BRANCH_NAME=${GITHUB_REF_NAME}
+            echo "release_version=${BRANCH_NAME}-$(date +%Y%m%d%H%M%S)" >> $GITHUB_OUTPUT
 
 
-            - name: docker hub login with token
-              uses: docker/login-action@v2
-              with:
-                registry: docker.io
-                username: ${{ secrets.DOCKER_USERNAME }}
-                password: ${{ secrets.DOCKER_PASSWORD }}
+    Nodejs-Docker-Build:
 
+      uses: ssagarshiva/githubactions-template/.github/workflows/nodejs-dockerbuid.yml@main
+      needs: [setup]
+      with:
+        release_version: ${{ needs.setup.outputs.release_version }}
+        DOCKER_HOST: ${{ vars.DOCKER_HOST }}
+        DOCKER_REPO: ${{ vars.DOCKER_REPO }}
 
-
-
-            #- name: log in to docker
-            #  uses: azure/docker-login@v2
-            #  with:
-            #    login-server: ${{ vars.ACR_HOST }}
-            #    username: ${{ vars.ACR_USERNAME }}
-            #    password: ${{ secrets.Azure_PASSWORD }}
-
-            - name: build and push docker image
-              run: |
-                docker build -t sagarshiva0/node:${{ env.TAG }} .
-                docker push sagarshiva0/node:${{ env.TAG }}
-
-    Deploy:
-        runs-on: ubuntu-latest
-        needs: build
-
-
-        steps:
-            - name: login to azure
-              uses: azure/login@v1
-              with:
-                creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-
-            - name: Set AKS Context
-              uses: azure/aks-set-context@v1
-              with:
-                creds: ${{ secrets.AZURE_CREDENTIALS }}
-                resource-group: sample-dev-us-rg
-                cluster-name: sample-dev-us-aks
-
-           
-
-            - name: install kubectl
-              run: |
-                az aks install-cli
-
-            - name: set up kubectl
-              uses: azure/setup-kubectl@v1
-              with:
-                version: 'latest'
-
-            #- name: Get AKS Credentials
-            #  run: |
-            #    az aks get-credentials --resource-group sample-dev-us-rg --name sample-dev-us-aks
-
-            - name: deploy to kubernetes
-              run: |
-                kubectl apply -f deployment/k8s.yml
-                
-                
-                
-
-  
-
-
-
-
-            
-
-
-
-  
-
-
-            
-
-
+      secrets: inherit
