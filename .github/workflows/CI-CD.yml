@@ -34,5 +34,4 @@ jobs:
         release_version: ${{ needs.setup.outputs.release_version }}
         DOCKER_HOST: ${{ vars.DOCKER_HOST }}
         DOCKER_REPO: ${{ vars.DOCKER_REPO }}
-
       secrets: inherit
