@@ -30,5 +30,17 @@ spec:
               memory: "512Mi"
               cpu: "1"
 
+---
 
-  
+apiVersion: v1
+kind: Service
+metadata:
+  name: nodejs-project
+  annotations:
+    service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+spec:
+  type: LoadBalancer
+  ports:
+   - portocol: TCP
+     port: 3000
+     targetPort: 3000
