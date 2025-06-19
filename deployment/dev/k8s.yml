@@ -28,3 +28,6 @@ spec:
             limits:
               memory: "512Mi"
               cpu: "1"
+
+
+  

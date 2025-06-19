@@ -51,7 +51,7 @@ jobs:
 
 
     Nodejs-K8s-Deploy: 
-      if: ${{ github.event_name == 'push' || github.event_inputs.environment == 'dev' }}
+      if: ${{ github.event_name == 'push' || github.event.inputs.environment == 'dev' }}
       uses: ssagarshiva/githubactions-template/.github/workflows/nodeks.deploy.yml@main
       needs: [setup,Nodejs-Docker-Build]
       with:
@@ -67,4 +67,3 @@ jobs:
 
       secrets: inherit
 
-      
