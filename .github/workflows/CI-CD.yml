@@ -53,7 +53,7 @@ jobs:
     Nodejs-K8s-Deploy: 
       if: ${{ github.event_name == 'push' || github.event_inputs.environment == 'dev' }}
       uses: ssagarshiva/githubactions-template/.github/workflows/nodeks.deploy.yml@main
-      needs: [Nodejs-Docker-Build]
+      needs: [setup,Nodejs-Docker-Build]
       with:
         environment: dev
         release_version: ${{ needs.setup.outputs.release_version }}
@@ -64,4 +64,5 @@ jobs:
         AKS_RESOURCE_GROUP: ${{ vars.AKS_RESOURCE_GROUP }}
         AKS_CLUSTER_NAMESPACE: ${{ vars.AKS_CLUSTER_NAMESPACE }}
         AKS_ACR_SECRET: ${{ vars.AKS_ACR_SECRET }}
+
       secrets: inherit
