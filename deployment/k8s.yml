@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: nodejs-project
-          image: sampledevuacr.azurecr.io/nodejs-project:v7
+          image: <acr-host/<acr-repo>:<tag>
           ports:
             - containerPort: 3000
           env:

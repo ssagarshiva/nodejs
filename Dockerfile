@@ -1,21 +1,21 @@
-# Use the official Node.js image as the base image
-FROM alpine:3.21
+# Base Image
+FROM node:18
 
-# Create and set the working directory
-WORKDIR /usr/src/app
+# Set the working directory
+WORKDIR /app
 
-# Copy package.json and package-lock.json files to the working directory
+# Copy package.json
 COPY package*.json ./
 
 # Install dependencies
-#RUN npm install
+RUN npm install
 
 
-# Copy the rest of the application code to the working directory
+# Copy the rest of the application code
 COPY . .
 
-# Expose the port the app runs on
+# Expose the application port
 EXPOSE 3000
 
-# Command to run the application
-CMD [ "node", "app.js" ]
+# Start the application
+CMD ["node", "app.js"]

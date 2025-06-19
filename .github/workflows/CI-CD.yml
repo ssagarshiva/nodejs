@@ -5,7 +5,7 @@ on :
     branches:
       - sample
       - main
-      - master
+      - version
 
   workflow_dispatch: # Allows manual triggering of the workflow
 
