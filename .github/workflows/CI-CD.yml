@@ -55,7 +55,7 @@ jobs:
       uses: ssagarshiva/githubactions-template/.github/workflows/nodeks.deploy.yml@main
       needs: [Nodejs-Docker-Build]
       with:
-        enviroment: dev
+        environment: dev
         release_version: ${{ needs.setup.outputs.release_version }}
         ACR_HOST: ${{ vars.ACR_HOST }}
         ACR_USERNAME: ${{ vars.ACR_USERNAME }}
