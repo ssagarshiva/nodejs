@@ -8,6 +8,17 @@ on :
       - version
 
   workflow_dispatch: # Allows manual triggering of the workflow
+    inputs:
+      environment:
+        description: 'which env to deploy '
+        required: true
+        default: 'dev'
+        type: choice
+        options:
+          - dev
+          - test
+          - stage
+          - production
 
 
 
@@ -36,4 +47,21 @@ jobs:
         DOCKER_REPO: ${{ vars.DOCKER_REPO }}
         DOCKER_USERNAME: ${{ vars.DOCKER_USERNAME }}
 
+      secrets: inherit
+
+
+    Nodejs-K8s-Deploy: 
+      if: ${{ github.event_name == 'push' || github.event_inputs.environment == 'dev' }}
+      uses: ssagarshiva/githubactions-template/.github/workflows/nodeks.deploy.yml@main
+      needs: [Nodejs-Docker-Build]
+      with:
+        enviroment: dev
+        release_version: ${{ needs.setup.outputs.release_version }}
+        ACR_HOST: ${{ vars.ACR_HOST }}
+        ACR_USERNAME: ${{ vars.ACR_USERNAME }}
+        ACR_REPO: ${{ vars.ACR_REPO }}
+        AKS_CLUSTER: ${{ vars.AKS_CLUSTER }}
+        AKS_RESOURCE_GROUP: ${{ vars.AKS_RESOURCE_GROUP }}
+        AKS_CLUSTER_NAMESPACE: ${{ vars.AKS_CLUSTER_NAMESPACE }}
+        AKS_ACR_SECRET: ${{ vars.AKS_ACR_SECRET }}
       secrets: inherit
