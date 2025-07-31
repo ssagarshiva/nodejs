@@ -12,9 +12,15 @@ pipeline {
             }
         }
 
-        stage('Build') {
+        stage('install Dependencies') {
             steps {
                 sh 'npm install'
+            }
+        }
+
+        stage( 'docker build') {
+            steps {
+                sh 'docker build -t nodejs-app .'
             }
         }
     }
