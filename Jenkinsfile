@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     tools {
-       nodejs 'Node.js ' // Match the name you gave in step 2
+       nodejs 'Node.js' // Match the name you gave in step 2
       }
 
     stages {
