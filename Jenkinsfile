@@ -2,58 +2,49 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = "my-app-image"
-        ECR_REPO = "123456789012.dkr.ecr.us-east-1.amazonaws.com/my-app"
+        IMAGE_NAME = "nodejs-app"
+        IMAGE_TAG = "latest"
+        DOCKER_REGISTRY = "sagarshiva0"
     }
 
     stages {
         stage('Checkout') {
             steps {
-                git url: 'https://github.com/your-org/your-repo.git', branch: 'main'
+                git url: 'https://github.com/your-org/your-nodejs-repo.git', branch: 'jenkins'
             }
         }
 
-        stage('Build') {
-            steps {
-                echo 'Building the application...'
-                sh 'make build' // or your build command
-            }
-        }
-
-        stage('Test') {
-            steps {
-                echo 'Running tests...'
-                sh 'make test' // or your test command
-            }
-        }
-
-        stage('Docker Build & Push') {
+        stage('Build Docker Image') {
             steps {
                 script {
-                    sh """
-                    aws ecr get-login-password | docker login --username AWS --password-stdin $ECR_REPO
-                    docker build -t $DOCKER_IMAGE .
-                    docker tag $DOCKER_IMAGE $ECR_REPO:$BUILD_NUMBER
-                    docker push $ECR_REPO:$BUILD_NUMBER
-                    """
+                    dockerImage = docker.build("${DOCKER_REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}")
                 }
             }
         }
 
-        stage('Deploy to EKS') {
+        stage('Push to Docker Hub') {
             steps {
-                echo 'Deploying to Kubernetes...'
-                sh 'kubectl apply -f k8s/deployment.yaml'
+                script {
+                    docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials-id') {
+                        dockerImage.push()
+                    }
+                }
+            }
+        }
+
+        stage('Cleanup') {
+            steps {
+                sh "docker rmi ${DOCKER_REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG} || true"
             }
         }
     }
 
     post {
         success {
-            echo 'Pipeline completed successfully!'
+            echo '✅ Build and push completed successfully!'
         }
         failure {
-            echo 'Pipeline failed.'
+            echo '❌ Build failed. Check logs for details.'
         }
     }
 }
