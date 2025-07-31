@@ -1,27 +1,50 @@
 pipeline {
     agent any
 
+    environment {
+        IMAGE_NAME = "nodejs-app"
+        IMAGE_TAG = "latest"
+        DOCKER_REGISTRY = "sagarshiva0"
+    }
+
     stages {
-        stage('Clone Repository') {
+        stage('Checkout') {
             steps {
                 git url: 'https://github.com/ssagarshiva/nodejs.git', branch: 'jenkins'
             }
         }
 
-        stage('Run Tests') {
+        stage('Build Docker Image') {
             steps {
-                echo 'Running sample tests...'
-                sh './scripts/run-tests.sh' // Replace with your actual test script
+                script {
+                    dockerImage = docker.build("${DOCKER_REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}")
+                }
+            }
+        }
+
+        stage('Push to Docker Hub') {
+            steps {
+                script {
+                    docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials-id') {
+                        dockerImage.push()
+                    }
+                }
+            }
+        }
+
+        stage('Cleanup') {
+            steps {
+                sh "docker rmi ${DOCKER_REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG} || true"
             }
         }
     }
 
     post {
         success {
-            echo '✅ Tests passed successfully!'
+            echo '✅ Build and push completed successfully!'
         }
         failure {
-            echo '❌ Tests failed. Check logs for details.'
+            echo '❌ Build failed. Check logs for details.'
         }
     }
 }
