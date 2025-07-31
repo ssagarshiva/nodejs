@@ -8,9 +8,9 @@ pipeline {
             }
         }
 
-        stage('Say Hello') {
+        stage('Build') {
             steps {
-                echo '👋 Hello, Jenkins Pipeline!'
+                sh 'npm install'
             }
         }
     }
